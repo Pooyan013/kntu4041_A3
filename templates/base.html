@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "WebGIS Final Project" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand" href="{{ url_for('index') }}">WebGIS</a>
+        <nav class="nav">
+          <a href="{{ url_for('about') }}">Made By</a>
+          {% if g.user %}
+            <a href="{{ url_for('map_page') }}">Map</a>
+            <span class="nav__user">Signed in as <strong>{{ g.user['username'] }}</strong></span>
+            <form class="nav__logout" action="{{ url_for('logout') }}" method="post">
+              <button type="submit" class="btn btn--link">Logout</button>
+            </form>
+          {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="{{ container_class or 'container' }}">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash">
+            {% for category, message in messages %}
+              <div class="flash__item flash__item--{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

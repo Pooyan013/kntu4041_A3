@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="map-layout">
+    <div id="map" class="map"></div>
+
+    <aside class="panel">
+      <div class="panel__header">
+        <h2>GetFeatureInfo</h2>
+        <p class="muted">Click on the WMS layer to see attributes.</p>
+      </div>
+
+      <div id="info" class="info">
+        <div class="muted">No feature selected yet.</div>
+      </div>
+
+      <div class="panel__footer">
+        <div class="kv">
+          <div class="kv__k">WMS</div>
+          <div class="kv__v">{{ wms_base_url }}</div>
+        </div>
+        <div class="kv">
+          <div class="kv__k">Layer</div>
+          <div class="kv__v">{{ wms_layer }}</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    window.__WEBGIS__ = {
+      featureInfoEndpoint: "{{ url_for('feature_info') }}",
+      wmsBaseUrl: "{{ wms_base_url }}",
+      wmsLayer: "{{ wms_layer }}",
+      wmsServerType: "{{ wms_server_type }}"
+    };
+  </script>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
